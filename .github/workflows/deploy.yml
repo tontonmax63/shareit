@@ -69,9 +69,8 @@ jobs:
 
     - name: replace vars in k8s.yaml
       run: |
-        ls -lart
         pwd
-        ls -lart $HOME/work
+        ls -lart ..
         env
         sed -ie "s/\$IMAGE_NAME/${{ env.IMAGE_NAME }}/g" $HOME/work/k8s.yaml
         sed -ie "s/\$IMAGE_TAG/${{ env.IMAGE_TAG }}/g" $HOME/work/k8s.yaml
