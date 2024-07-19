@@ -12,7 +12,7 @@ env:
   REGISTRY_FQDN: registry.digitalocean.com
   REGISTRY_USERNAME: ${{ secrets.DO_USERNAME }}
   REGISTRY_PASSWORD: ${{ secrets.DO_ACCESS_TOKEN }}
-  K8S_CONFIG: 
+  K8S_CONFIG: ${{ secrets.K8S_CONF_FILE }}
 
 jobs:
   build:
@@ -64,7 +64,7 @@ jobs:
 
     - name: create ~/.kube/config file
       run: |
-        echo "${{ secrets.K8S_CONFIG }}" > $HOME/.kube/config
+        echo "${{ env.K8S_CONFIG }}" > $HOME/.kube/config
 
     - name: replace vars in k8s.yaml
       run: |
