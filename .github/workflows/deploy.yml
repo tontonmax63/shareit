@@ -68,10 +68,10 @@ jobs:
         echo -e "${{ env.K8S_CONFIG }}" > $HOME/.kube/config
 
     - name: clone repository
-      uses: tontonmax63/shareit@main
+      uses: actions/checkout@v3
       with:
-        owner: 'tontonmax63'
-        repository: 'shareit'
+        repository: 'tontonmax63/shareit@main'
+        path: '.'
 
     - name: replace vars in k8s.yaml
       run: |
