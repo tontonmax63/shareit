@@ -80,7 +80,7 @@ jobs:
 
   validate:
     runs-on: ubuntu-latest
-    needs: build
+    needs: deploy
 
     steps:
     - name: validate url https://${{ env.IMAGE_NAME }}${{ env.FRONT_DOMAIN }}
