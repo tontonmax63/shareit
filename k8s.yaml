@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: $IMAGE_NAME
+  name: __IMAGE_NAME__
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: $IMAGE_NAME
+      app: __IMAGE_NAME__
   template:
     metadata:
       labels:
-        app: $IMAGE_NAME
+        app: __IMAGE_NAME__
     spec:
       containers:
-      - name: $IMAGE_NAME
-        image: $REGISTRY_FQDN/$IMAGE_VENDOR/$IMAGE_NAME:$IMAGE_TAG
+      - name: __IMAGE_NAME__
+        image: __REGISTRY_FQDN__/__IMAGE_VENDOR__/__IMAGE_NAME__:__IMAGE_TAG__
         ports:
         - containerPort: 8080
         volumeMounts:
@@ -26,18 +26,18 @@ spec:
           driver: "k8s-s3fs"
           options:
             endpoint: ams3.digitaloceanspaces.com
-            bucket: $S3_BUCKET_NAME
-            accessKeyID: $S3_ACCESS_KEY
-            secretAccessKey: $S3_SECRET_KEY
+            bucket: __S3_BUCKET_NAME__
+            accessKeyID: __S3_ACCESS_KEY__
+            secretAccessKey: __S3_SECRET_KEY__
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: $IMAGE_NAME
+  name: __IMAGE_NAME__
 spec:
   type: LoadBalancer
   selector:
-    app: $IMAGE_NAME
+    app: __IMAGE_NAME__
   ports:
   - protocol: TCP
     port: 80
@@ -46,19 +46,19 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: $IMAGE_NAME-ingress
+  name: __IMAGE_NAME__-ingress
   namespace: default
   annotations:
     kubernetes.io/ingress.class: caddy
 spec:
   rules:
-  - host: $IMAGE_NAME.$FRONT_DOMAIN
+  - host: __IMAGE_NAME__.__FRONT_DOMAIN__
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: $IMAGE_NAME
+            name: __IMAGE_NAME__
             port:
               number: 80
