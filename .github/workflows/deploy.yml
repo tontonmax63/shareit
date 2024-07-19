@@ -64,7 +64,8 @@ jobs:
 
     - name: create ~/.kube/config file
       run: |
-        echo "${{ env.K8S_CONFIG }}" > $HOME/.kube/config
+        mkdir -p $HOME/.kube
+        echo -e "${{ env.K8S_CONFIG }}" > $HOME/.kube/config
 
     - name: replace vars in k8s.yaml
       run: |
