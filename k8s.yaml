@@ -1,50 +1,50 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sse-shareit
+  name: $IMAGE_NAME
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sse-shareit
+      app: $IMAGE_NAME
   template:
     metadata:
       labels:
-        app: sse-shareit
+        app: $IMAGE_NAME
     spec:
       containers:
-      - name: sse-shareit
-        image: registry.digitalocean.com/clockwork-registry/sse-shareit:latest
+      - name: $IMAGE_NAME
+        image: $REGISTRY_FQDN/$IMAGE_VENDOR/$IMAGE_NAME:$IMAGE_TAG
         ports:
         - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: sse-shareit
+  name: $IMAGE_NAME-lb
 spec:
   type: LoadBalancer
   ports:
   - port: 80
     targetPort: 8080
   selector:
-    app: sse-shareit
+    app: $IMAGE_NAME
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: sse-shareit-ingress
+  name: $IMAGE_NAME-ingress
   annotations:
     kubernetes.io/ingress.class: "caddy"
 spec:
   rules:
-  - host: sse-shareit.do-interview.cw.substance3d.io
+  - host: $IMAGE_NAME.do-interview.cw.substance3d.io
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: sse-shareit
+            name: $IMAGE_NAME
             port:
               number: 80
