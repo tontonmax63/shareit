@@ -25,7 +25,7 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-  - port: 443
+  - port: 80
     targetPort: 8080
   selector:
     app: $IMAGE_NAME
@@ -47,4 +47,4 @@ spec:
           service:
             name: $IMAGE_NAME
             port:
-              number: 443
+              number: 80
