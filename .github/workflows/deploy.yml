@@ -47,9 +47,17 @@ jobs:
         docker tag ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} ${{ env.REGISTRY_FQDN }}/${{ env.IMAGE_VENDOR }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
         docker push ${{ env.REGISTRY_FQDN }}/${{ env.IMAGE_VENDOR }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
-  deploy:
+  release:
     runs-on: ubuntu-latest
     needs: build
+
+    steps:
+    - name: create tag
+      run: echo "TO DO"
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: release
 
     steps:
     - name: set up kubectl
