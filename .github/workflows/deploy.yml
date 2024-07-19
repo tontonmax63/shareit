@@ -75,20 +75,10 @@ jobs:
 
     - name: replace vars in k8s.yaml
       run: |
-        pwd
-        echo "-------"
-        ls -lart 
-        echo "-------"
-        ls -lart $GITHUB_PATH
-        echo "-------"
-        ls -lart $GITHUB_WORKSPACE
-        echo "-------"
-        ls -lart $GITHUB_ACTION_PATH
-        echo "-------"
-        sed -ie "s/\$IMAGE_NAME/${{ env.IMAGE_NAME }}/g" $HOME/work/k8s.yaml
-        sed -ie "s/\$IMAGE_TAG/${{ env.IMAGE_TAG }}/g" $HOME/work/k8s.yaml
-        sed -ie "s/\$IMAGE_VENDOR/${{ env.IMAGE_VENDOR }}/g" $HOME/work/k8s.yaml
-        sed -ie "s/\$REGISTRY_FQDN/${{ env.REGISTRY_FQDN }}/g" $HOME/work/k8s.yaml
+        sed -ie "s/\$IMAGE_NAME/${{ env.IMAGE_NAME }}/g" k8s.yaml
+        sed -ie "s/\$IMAGE_TAG/${{ env.IMAGE_TAG }}/g" k8s.yaml
+        sed -ie "s/\$IMAGE_VENDOR/${{ env.IMAGE_VENDOR }}/g" k8s.yaml
+        sed -ie "s/\$REGISTRY_FQDN/${{ env.REGISTRY_FQDN }}/g" k8s.yaml
 
     - name: deploy pod
       run: |
