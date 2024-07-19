@@ -67,6 +67,12 @@ jobs:
         mkdir -p $HOME/.kube
         echo -e "${{ env.K8S_CONFIG }}" > $HOME/.kube/config
 
+    - name: clone repository
+      uses: tontonmax63/shareit@main
+      with:
+        owner: 'tontonmax63'
+        repository: 'shareit'
+
     - name: replace vars in k8s.yaml
       run: |
         pwd
