@@ -70,7 +70,7 @@ jobs:
     - name: clone repository
       uses: actions/checkout@v3
       with:
-        repository: 'tontonmax63/shareit@main'
+        repository: 'tontonmax63/shareit'
         path: '.'
 
     - name: replace vars in k8s.yaml
