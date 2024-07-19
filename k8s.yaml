@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: $IMAGE_NAME
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: $IMAGE_NAME
