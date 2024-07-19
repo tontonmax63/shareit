@@ -6,8 +6,8 @@ on:
       - main
 
 env:
-  IMAGE_VENDOR: sse
-  IMAGE_NAME: shareit
+  IMAGE_VENDOR: clockwork-registry
+  IMAGE_NAME: sse_shareit
   IMAGE_TAG: latest
   REGISTRY_FQDN: registry.digitalocean.com
   REGISTRY_USERNAME: ${{ secrets.DO_USERNAME }}
@@ -83,5 +83,5 @@ jobs:
     - name: deploy pod
       run: |
         cat $HOME/.kube/config
-        kubectl set image deployment/${{ env.IMAGE_NAME }} ${{ env.IMAGE_NAME }}=${{ env.REGISTRY_FQDN }}/${{ env.IMAGE_VENDOR }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-        kubectl rollout status deployment/${{ env.IMAGE_NAME }}
+        kubectl --kubeconfig $HOME/.kube/config set image deployment/${{ env.IMAGE_NAME }} ${{ env.IMAGE_NAME }}=${{ env.REGISTRY_FQDN }}/${{ env.IMAGE_VENDOR }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+        kubectl --kubeconfig $HOME/.kube/config rollout status deployment/${{ env.IMAGE_NAME }}
