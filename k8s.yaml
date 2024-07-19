@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: __IMAGE_NAME__
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: __IMAGE_NAME__
@@ -15,11 +15,14 @@ spec:
       containers:
       - name: __IMAGE_NAME__
         image: __REGISTRY_FQDN__/__IMAGE_VENDOR__/__IMAGE_NAME__:__IMAGE_TAG__
+        env:
+          - name: BLOB_STORAGE_URL
+            value: "file://./mnt/s3?create_dir=true"
         ports:
         - containerPort: 8080
         volumeMounts:
         - name: storage
-          mountPath: /storage
+          mountPath: /mnt/s3
       volumes:
       - name: storage
         flexVolume:
