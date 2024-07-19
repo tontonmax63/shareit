@@ -6,7 +6,7 @@ metadata:
 stringData:
   accessKeyID: __S3_ACCESS_KEY__
   secretAccessKey: __S3_SECRET_KEY__
-  endpoint: https://ams3.digitaloceanspaces.com
+  endpoint: https://sse-shareit-storage.ams3.digitaloceanspaces.com
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
