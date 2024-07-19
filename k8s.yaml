@@ -40,12 +40,12 @@ spec:
         image: __REGISTRY_FQDN__/__IMAGE_VENDOR__/__IMAGE_NAME__:__IMAGE_TAG__
         env:
           - name: BLOB_STORAGE_URL
-            value: "file://./mnt/s3?create_dir=true"
+            value: "file://./app/storage"
         ports:
         - containerPort: 8080
         volumeMounts:
         - name: s3-storage
-          mountPath: /mnt/s3
+          mountPath: /app/storage
       volumes:
       - name: s3-storage
         persistentVolumeClaim:
