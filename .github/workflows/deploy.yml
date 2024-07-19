@@ -68,14 +68,6 @@ jobs:
         repository: 'tontonmax63/shareit'
         path: '.'
 
-    #- name: replace vars in k8s.yaml
-    #  run: |
-    #    sed -ie "s/\$IMAGE_NAME/${{ env.IMAGE_NAME }}/g" k8s.yaml
-    #    sed -ie "s/\$IMAGE_TAG/${{ env.IMAGE_TAG }}/g" k8s.yaml
-    #    sed -ie "s/\$IMAGE_VENDOR/${{ env.IMAGE_VENDOR }}/g" k8s.yaml
-    #    sed -ie "s/\$REGISTRY_FQDN/${{ env.REGISTRY_FQDN }}/g" k8s.yaml
-    #    sed -ie "s/\$FRONT_DOMAIN/${{ env.FRONT_DOMAIN }}/g" k8s.yaml
-
     - name: replace vars in k8s.yaml
       uses: falnyr/replace-env-vars-action@master
       env:
@@ -93,7 +85,6 @@ jobs:
     - name: deploy pod
       run: |
         kubectl apply -f k8s.yaml
-#        kubectl get pods
 
   validate:
     runs-on: ubuntu-latest
