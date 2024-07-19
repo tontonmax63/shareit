@@ -82,7 +82,7 @@ jobs:
 
     - name: deploy pod
       run: |
-        kubectl --kubeconfig $HOME/.kube/config apply -f k8s.yaml
-        kubectl --kubeconfig $HOME/.kube/config get nodes
+        kubectl apply -f k8s.yaml
+        kubectl get pods
     #    kubectl --kubeconfig $HOME/.kube/config set image deployment/${{ env.IMAGE_NAME }} ${{ env.IMAGE_NAME }}=${{ env.REGISTRY_FQDN }}/${{ env.IMAGE_VENDOR }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
     #    kubectl --kubeconfig $HOME/.kube/config rollout status deployment/${{ env.IMAGE_NAME }}
