@@ -17,7 +17,7 @@ spec:
         image: $REGISTRY_FQDN/$IMAGE_VENDOR/$IMAGE_NAME:$IMAGE_TAG
         ports:
         - containerPort: 8080
-      volumeMounts:
+        volumeMounts:
         - name: storage
           mountPath: /storage
       volumes:
@@ -25,10 +25,10 @@ spec:
         flexVolume:
           driver: "k8s-s3fs"
           options:
-            bucket: $IMAGE_NAME-storage
             endpoint: ams3.digitaloceanspaces.com
-            accessKeyID: ${{ secrets.S3_ACCESS_KEY }}
-            secretAccessKey: ${{ secrets.S3_SECRET_KEY }}
+            bucket: $S3_BUCKET_NAME
+            accessKeyID: $S3_ACCESS_KEY
+            secretAccessKey: $S3_SECRET_KEY
 ---
 apiVersion: v1
 kind: Service

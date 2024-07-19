@@ -14,6 +14,9 @@ env:
   REGISTRY_PASSWORD: ${{ secrets.DO_ACCESS_TOKEN }}
   K8S_CONFIG: ${{ secrets.K8S_CONF_FILE }}
   FRONT_DOMAIN: do-interview.cw.substance3d.io
+  S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+  S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+  S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
 
 jobs:
   build:
@@ -72,6 +75,9 @@ jobs:
         sed -ie "s/\$IMAGE_VENDOR/${{ env.IMAGE_VENDOR }}/g" k8s.yaml
         sed -ie "s/\$REGISTRY_FQDN/${{ env.REGISTRY_FQDN }}/g" k8s.yaml
         sed -ie "s/\$FRONT_DOMAIN/${{ env.FRONT_DOMAIN }}/g" k8s.yaml
+        sed -ie "s/\$S3_BUCKET_NAME/${{ env.S3_BUCKET_NAME }}/g" k8s.yaml
+        sed -ie "s/\$S3_ACCESS_KEY/${{ env.S3_ACCESS_KEY }}/g" k8s.yaml
+        sed -ie "s/\$S3_SECRET_KEY/${{ env.S3_SECRET_KEY }}/g" k8s.yaml
 
     - name: deploy pod
       run: |
