@@ -40,7 +40,7 @@ metadata:
     kubernetes.io/ingress.class: caddy
 spec:
   rules:
-  - host: $IMAGE_NAME.do-interview.cw.substance3d.io
+  - host: $IMAGE_NAME.$FRONT_DOMAIN
     http:
       paths:
       - path: /

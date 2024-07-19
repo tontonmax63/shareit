@@ -13,7 +13,7 @@ env:
   REGISTRY_USERNAME: ${{ secrets.DO_USERNAME }}
   REGISTRY_PASSWORD: ${{ secrets.DO_ACCESS_TOKEN }}
   K8S_CONFIG: ${{ secrets.K8S_CONF_FILE }}
-  FRONT_DOMAIN: .do-interview.cw.substance3d.io
+  FRONT_DOMAIN: do-interview.cw.substance3d.io
 
 jobs:
   build:
@@ -85,7 +85,7 @@ jobs:
     steps:
     - name: validate url https://${{ env.IMAGE_NAME }}${{ env.FRONT_DOMAIN }}
       run: |
-        r=$(curl --write-out '%{http_code}' --silent --output /dev/null https://${{ env.IMAGE_NAME }}${{ env.FRONT_DOMAIN }})
+        r=$(curl --write-out '%{http_code}' --silent --output /dev/null https://${{ env.IMAGE_NAME }}.${{ env.FRONT_DOMAIN }})
         if [ $r -ne 200 ]; then
           exit 1
         fi
