@@ -25,7 +25,7 @@ spec:
           mountPath: /mnt/s3
       initContainers:
       - name: __IMAGE_NAME__-storage
-        image: mephistoxol/s3fs
+        image: efrecon/s3fs
         command: ["sh", "-c", "s3fs __S3_BUCKET_NAME__ /mnt/s3 -o url=https://ams3.digitaloceanspaces.com -o use_path_request_style -o allow_other -o nonempty -o passwd_file=/etc/passwd-s3fs"]
         volumeMounts:
         - name: s3-storage
