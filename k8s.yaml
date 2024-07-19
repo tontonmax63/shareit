@@ -15,23 +15,37 @@ spec:
       containers:
       - name: __IMAGE_NAME__
         image: __REGISTRY_FQDN__/__IMAGE_VENDOR__/__IMAGE_NAME__:__IMAGE_TAG__
-#        env:
-#          - name: BLOB_STORAGE_URL
-#            value: "file://./mnt/s3?create_dir=true"
+        env:
+          - name: BLOB_STORAGE_URL
+            value: "file://./mnt/s3?create_dir=true"
         ports:
         - containerPort: 8080
-#        volumeMounts:
-#        - name: storage
-#          mountPath: /mnt/s3
-#      volumes:
-#      - name: storage
-#        flexVolume:
-#          driver: "k8s-s3fs"
-#          options:
-#            endpoint: https://__IMAGE_NAME__-storage.ams3.digitaloceanspaces.com
-#            bucket: __S3_BUCKET_NAME__
-#            accessKeyID: __S3_ACCESS_KEY__
-#            secretAccessKey: __S3_SECRET_KEY__
+        volumeMounts:
+        - name: s3-storage
+          mountPath: /mnt/s3
+      initContainers:
+      - name: init-s3fs
+        image: jess/s3fs
+        command: ["sh", "-c", "s3fs __S3_BUCKET_NAME__ /mnt/s3 -o url=https://ams3.digitaloceanspaces.com -o use_path_request_style -o allow_other -o nonempty -o passwd_file=/etc/passwd-s3fs"]
+        volumeMounts:
+        - name: s3-storage
+          mountPath: /mnt/s3
+        - name: s3fs-passwd
+          mountPath: /etc/passwd-s3fs
+      volumes:
+      - name: s3-storage
+        emptyDir: {}
+      - name: s3fs-passwd
+        secret:
+          secretName: passwd-s3fs
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: passwd-s3fs
+type: Opaque
+data:
+  passwd-s3fs: __S3_ACCESS_KEY__:__S3_SECRET_KEY__
 ---
 apiVersion: v1
 kind: Service
