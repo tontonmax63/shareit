@@ -70,7 +70,9 @@ jobs:
     - name: replace vars in k8s.yaml
       run: |
         pwd
-        ls -lart ..
+        ls -lart $GITHUB_PATH
+        ls -lart $GITHUB_WORKSPACE
+        ls -lart $GITHUB_ACTION_PATH
         env
         sed -ie "s/\$IMAGE_NAME/${{ env.IMAGE_NAME }}/g" $HOME/work/k8s.yaml
         sed -ie "s/\$IMAGE_TAG/${{ env.IMAGE_TAG }}/g" $HOME/work/k8s.yaml
