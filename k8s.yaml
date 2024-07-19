@@ -25,10 +25,10 @@ spec:
         flexVolume:
           driver: "k8s-s3fs"
           options:
-            bucket: $S3_BUCKET_NAME
-            endpoint: $S3_ENDPOINT
-            accessKeyID: $S3_ACCESS_KEY
-            secretAccessKey: $S3_SECRET_KEY
+            bucket: $IMAGE_NAME-storage
+            endpoint: ams3.digitaloceanspaces.com
+            accessKeyID: ${{ secrets.S3_ACCESS_KEY }}
+            secretAccessKey: ${{ secrets.S3_SECRET_KEY }}
 ---
 apiVersion: v1
 kind: Service
