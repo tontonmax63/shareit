@@ -23,7 +23,7 @@ kind: Service
 metadata:
   name: $IMAGE_NAME
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: $IMAGE_NAME
   ports:
