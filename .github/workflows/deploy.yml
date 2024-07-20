@@ -88,10 +88,11 @@ jobs:
         path: '.'
 
         
-    - name: set S3_ACCESS_KEY_B64 & S3_SECRET_KEY_B64
-      run: |
-        echo "S3_ACCESS_KEY_B64=$(echo -n '${{ env.S3_ACCESS_KEY }}' | base64)" >> $GITHUB_ENV
-        echo "S3_SECRET_KEY_B64=$(echo -n '${{ env.S3_SECRET_KEY }}' | base64)" >> $GITHUB_ENV
+    - name: set S3_ACCESS_KEY_B64
+      run: echo "S3_ACCESS_KEY_B64=$(echo -n '${{ env.S3_ACCESS_KEY }}' | base64)" >> $GITHUB_ENV
+    
+    - name: set S3_SECRET_KEY_B64
+      run: echo "S3_SECRET_KEY_B64=$(echo -n '${{ env.S3_SECRET_KEY }}' | base64)" >> $GITHUB_ENV
 
     - name: replace vars in k8s.yaml
       uses: falnyr/replace-env-vars-action@master
@@ -106,7 +107,6 @@ jobs:
         S3_SECRET_KEY: ${{ env.S3_SECRET_KEY }}
         S3_ACCESS_KEY_B64: ${{ env.S3_ACCESS_KEY_B64 }}
         S3_SECRET_KEY_B64: ${{ env.S3_SECRET_KEY_B64 }}
-        
       with:
         filename: k8s.yaml
 
