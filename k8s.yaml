@@ -14,7 +14,7 @@ metadata:
   name: s3fs-passwd
 type: Opaque
 data:
-  passwd-s3fs: __S3_ACCESS_KEY__:__S3_SECRET_KEY__
+  passwd-s3fs: __S3_CREDENTIALS__
 ---
 apiVersion: apps/v1
 kind: Deployment
