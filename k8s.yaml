@@ -56,7 +56,7 @@ spec:
       initContainers:
       - name: __IMAGE_NAME__-storage
         image: panubo/s3fs
-        command: ["sh", "-c", "/usr/local/bin/s3fs __S3_BUCKET_NAME__ /mnt/s3 -o url=https://ams3.digitaloceanspaces.com -o use_path_request_style -o allow_other -o nonempty -o passwd_file=/etc/passwd-s3fs"]
+        command: ["sh", "-c", "chmod 640 /etc/passwd-s3fs; /usr/local/bin/s3fs __S3_BUCKET_NAME__ /mnt/s3 -o url=https://ams3.digitaloceanspaces.com -o use_path_request_style -o allow_other -o nonempty -o passwd_file=/etc/passwd-s3fs"]
         volumeMounts:
         - name: s3-storage
           mountPath: /mnt/s3
