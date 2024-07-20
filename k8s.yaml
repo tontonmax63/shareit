@@ -39,8 +39,8 @@ spec:
         volumeMounts:
         - name: s3-storage
           mountPath: /mnt/s3
-        - name: s3fs-passwd
-          mountPath: /etc/passwd-s3fs
+        #- name: s3fs-passwd
+        #  mountPath: /etc/passwd-s3fs
       volumes:
       - name: s3-storage
         emptyDir: {}
