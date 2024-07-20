@@ -1,12 +1,4 @@
 ---
-apiVersion: v1
-kind: Secret
-metadata:
-  name: s3fs-passwd
-type: Opaque
-data:
-  passwd-s3fs: __S3_CREDENTIALS__
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,19 +26,25 @@ spec:
           mountPath: /mnt/s3
       initContainers:
       - name: __IMAGE_NAME__-storage
-        image: busybox:stable-musl
-        command: ['sh', '-c', "apk add --no-cache s3fs && echo '__S3_ACCESS_KEY__:__S3_SECRET_KEY__'>/etc/passwd-s3fs && chmod 640 /etc/passwd-s3fs && s3fs __S3_BUCKET_NAME__ /mnt/s3 -o url=https://nyc3.digitaloceanspaces.com -o use_path_request_style -o allow_other -o passwd_file=/etc/passwd-s3fs"]
+        image: s3fs-sidecar
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: s3-credentials
+              key: access-key
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: s3-credentials
+              key: secret-key
+        command: ["s3fs", "__S3_BUCKET_NAME__", "/mnt/s3", "-o", "allow_other"]
         volumeMounts:
         - name: s3-storage
           mountPath: /mnt/s3
-        #- name: s3fs-passwd
-        #  mountPath: /etc/passwd-s3fs
       volumes:
       - name: s3-storage
         emptyDir: {}
-      #- name: s3fs-passwd
-      #  secret:
-      #    secretName: s3fs-passwd
 ---
 apiVersion: v1
 kind: Service
