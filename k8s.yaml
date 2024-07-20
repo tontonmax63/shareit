@@ -40,7 +40,7 @@ spec:
         image: __REGISTRY_FQDN__/__IMAGE_VENDOR__/__IMAGE_NAME__:__IMAGE_TAG__
         env:
           - name: BLOB_STORAGE_URL
-            value: "file://./app/storage"
+            value: "file://./storage"
         ports:
         - containerPort: 8080
         volumeMounts:
