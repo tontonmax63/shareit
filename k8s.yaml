@@ -26,12 +26,12 @@ spec:
         image: __REGISTRY_FQDN__/__IMAGE_VENDOR__/__IMAGE_NAME__:__IMAGE_TAG__
         env:
           - name: BLOB_STORAGE_URL
-            value: "file:///mnt/s3"
+            value: "file://./storage"
         ports:
         - containerPort: 8080
         volumeMounts:
         - name: s3-storage
-          mountPath: /mnt/s3
+          mountPath: /app/storage
           mountPropagation: HostToContainer
       - name: __IMAGE_NAME__-storage
         image: signaleleven/s3fs-sidecar:latest
@@ -42,12 +42,12 @@ spec:
             add:
               - SYS_ADMIN
         env:
-        - name: AWS_ACCESS_KEY_ID
+        - name: AWSACCESSKEYID
           valueFrom:
             secretKeyRef:
               name: s3-credentials
               key: access-key
-        - name: AWS_SECRET_ACCESS_KEY
+        - name: AWSSECRETACCESSKEY
           valueFrom:
             secretKeyRef:
               name: s3-credentials
