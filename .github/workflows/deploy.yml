@@ -72,11 +72,14 @@ jobs:
 
     - name: install k8s-csi-s3
       run: |
-        git clone https://github.com/yandex-cloud/k8s-csi-s3
-        cd k8s-csi-s3/deploy/kubernetes
-        kubectl create -f provisioner.yaml
-        kubectl create -f driver.yaml
-        kubectl create -f csi-s3.yaml
+        K8S_CSI_S3_INSTALLED=$(kubectl get storageclasses.storage.k8s.io --output name | grep csi-s3 | wc -l | xargs)
+        if [ ! "$K8S_CSI_S3_INSTALLED" == "1" ]; then
+          git clone https://github.com/yandex-cloud/k8s-csi-s3
+          cd k8s-csi-s3/deploy/kubernetes
+          kubectl create -f provisioner.yaml
+          kubectl create -f driver.yaml
+          kubectl create -f csi-s3.yaml
+        fi
 
     - name: clone repository
       uses: actions/checkout@v3
