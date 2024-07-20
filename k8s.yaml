@@ -7,8 +7,8 @@ data:
   URL: 'https://ams3.digitaloceanspaces.com'
   BUCKET: '__S3_BUCKET_NAME__'
   MOUNTPOINT: '/s3-storage'
-  ALLOW_EMPTY: 1
-  ALLOW_OTHERS: 1
+  ALLOW_EMPTY: '1'
+  ALLOW_OTHERS: '1'
 ---
 apiVersion: apps/v1
 kind: Deployment
