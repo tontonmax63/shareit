@@ -1,4 +1,12 @@
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: s3-storage-config
+data:
+  BUCKET: '__S3_BUCKET_NAME__'
+  MOUNTPOINT: '/mnt/s3'
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -24,9 +32,15 @@ spec:
         volumeMounts:
         - name: s3-storage
           mountPath: /mnt/s3
-      initContainers:
+          mountPropagation: HostToContainer
       - name: __IMAGE_NAME__-storage
         image: signaleleven/s3fs-sidecar:latest
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - SYS_ADMIN
         env:
         - name: AWS_ACCESS_KEY_ID
           valueFrom:
@@ -38,10 +52,20 @@ spec:
             secretKeyRef:
               name: s3-credentials
               key: secret-key
-        command: ["s3fs", "__S3_BUCKET_NAME__", "/mnt/s3", "-o", "allow_other"]
+        - name: BUCKET
+          valueFrom:
+            configMapKeyRef:
+              name: s3-storage-config
+              key: BUCKET
+        - name: MOUNTPOINT
+          valueFrom:
+            configMapKeyRef:
+              name: s3-storage-config
+              key: MOUNTPOINT
         volumeMounts:
         - name: s3-storage
           mountPath: /mnt/s3
+          mountPropagation: Bidirectional
       volumes:
       - name: s3-storage
         emptyDir: {}
