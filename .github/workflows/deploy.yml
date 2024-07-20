@@ -55,7 +55,7 @@ jobs:
     steps:
     - name: set version
       run: |
-        BUILD_NUMBER="1.${{ github.run_id }}.${{ github.run_number }}.${{ github.run_attempt }}"
+        BUILD_NUMBER="1.0.${{ github.run_number }}.${{ github.run_attempt }}"
         echo "DIST_VERSION=${{ env.IMAGE_NAME }}-${BUILD_NUMBER}" >> $GITHUB_ENV
 
     - name: create tag
