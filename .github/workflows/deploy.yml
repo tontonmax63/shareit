@@ -112,6 +112,7 @@ jobs:
 
     - name: deploy pod
       run: |
+        cat k8s.yaml
         kubectl apply -f k8s.yaml
 
   validate:
