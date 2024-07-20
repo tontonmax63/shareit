@@ -6,7 +6,7 @@ metadata:
 stringData:
   accessKeyID: __S3_ACCESS_KEY__
   secretAccessKey: __S3_SECRET_KEY__
-  endpoint: https://sse-shareit-storage.ams3.digitaloceanspaces.com
+  endpoint: https://__S3_BUCKET_NAME__.ams3.digitaloceanspaces.com
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -19,7 +19,17 @@ spec:
   resources:
     requests:
       storage: 5Gi
-  storageClassName: csi-s3
+  storageClassName: csi-s3-existing-bucket
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: csi-s3-existing-bucket
+provisioner: ru.yandex.s3.csi
+parameters:
+  mounter: geesefs
+  options: "--memory-limit 1000 --dir-mode 0777 --file-mode 0666"
+  bucket: __S3_BUCKET_NAME__
 ---
 apiVersion: apps/v1
 kind: Deployment
