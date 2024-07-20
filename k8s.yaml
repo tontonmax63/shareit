@@ -7,6 +7,8 @@ data:
   URL: 'https://ams3.digitaloceanspaces.com'
   BUCKET: '__S3_BUCKET_NAME__'
   MOUNTPOINT: '/s3-storage'
+  ALLOW_EMPTY: 1
+  ALLOW_OTHERS: 1
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -67,7 +69,17 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: s3-storage-config
-              key: URL              
+              key: URL
+        - name: ALLOWEMPTY
+          valueFrom:
+            configMapKeyRef:
+              name: s3-storage-config
+              key: ALLOW_EMPTY   
+        - name: ALLOWOTHERS
+          valueFrom:
+            configMapKeyRef:
+              name: s3-storage-config
+              key: ALLOW_OTHERS             
         volumeMounts:
         - name: s3-storage
           mountPath: /s3-storage
