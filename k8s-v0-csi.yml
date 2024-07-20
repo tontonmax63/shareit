@@ -1,0 +1,89 @@
+# doesn't work....unable to find the issue
+apiVersion: v1
+kind: Secret
+metadata:
+  name: csi-s3-secret
+  namespace: default
+stringData:
+  accessKeyID: __S3_ACCESS_KEY__
+  secretAccessKey: __S3_SECRET_KEY__
+  endpoint: https://ams3.digitaloceanspaces.com
+  region: ""
+  encryptionKey: ""
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: csi-s3-pvc
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: csi-s3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: __IMAGE_NAME__
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: __IMAGE_NAME__
+  template:
+    metadata:
+      labels:
+        app: __IMAGE_NAME__
+    spec:
+      containers:
+      - name: __IMAGE_NAME__
+        image: __REGISTRY_FQDN__/__IMAGE_VENDOR__/__IMAGE_NAME__:__IMAGE_TAG__
+        env:
+          - name: BLOB_STORAGE_URL
+            value: "file://./storage"
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: s3-storage
+          mountPath: /app/storage
+      volumes:
+      - name: s3-storage
+        persistentVolumeClaim:
+          claimName: csi-s3-pvc
+          readOnly: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: __IMAGE_NAME__
+spec:
+  type: LoadBalancer
+  selector:
+    app: __IMAGE_NAME__
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: __IMAGE_NAME__-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: caddy
+spec:
+  rules:
+  - host: __IMAGE_NAME__.__FRONT_DOMAIN__
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: __IMAGE_NAME__
+            port:
+              number: 80

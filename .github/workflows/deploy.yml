@@ -85,16 +85,16 @@ jobs:
         mkdir -p $HOME/.kube 2>/dev/null
         echo -e "${{ env.K8S_CONFIG }}" > $HOME/.kube/config
 
-    - name: install k8s-csi-s3
-      run: |
-        K8S_CSI_S3_INSTALLED=$(kubectl get storageclasses.storage.k8s.io --output name | grep csi-s3 | wc -l | xargs)
-        if [ ! "$K8S_CSI_S3_INSTALLED" == "1" ]; then
-          git clone https://github.com/yandex-cloud/k8s-csi-s3
-          cd k8s-csi-s3/deploy/kubernetes
-          kubectl create -f provisioner.yaml
-          kubectl create -f driver.yaml
-          kubectl create -f csi-s3.yaml
-        fi
+    #- name: install k8s-csi-s3 # can be done with helm too, solution tested for the exercise
+    #  run: |
+    #    K8S_CSI_S3_INSTALLED=$(kubectl get storageclasses.storage.k8s.io --output name | grep csi-s3 | wc -l | xargs)
+    #    if [ ! "$K8S_CSI_S3_INSTALLED" == "1" ]; then
+    #      git clone https://github.com/yandex-cloud/k8s-csi-s3
+    #      cd k8s-csi-s3/deploy/kubernetes
+    #      kubectl create -f provisioner.yaml
+    #      kubectl create -f driver.yaml
+    #      kubectl create -f csi-s3.yaml
+    #    fi
 
     - name: clone repository
       uses: actions/checkout@v3
@@ -102,8 +102,8 @@ jobs:
         repository: 'tontonmax63/shareit'
         path: '.'
 
-    - name: set S3_CREDENTIALS
-      run: echo "S3_CREDENTIALS=$(echo -n '${{ env.S3_ACCESS_KEY }}:${{ env.S3_SECRET_KEY }}' | base64)" >> $GITHUB_ENV
+    #- name: set S3_CREDENTIALS
+    #  run: echo "S3_CREDENTIALS=$(echo -n '${{ env.S3_ACCESS_KEY }}:${{ env.S3_SECRET_KEY }}' | base64)" >> $GITHUB_ENV
         
     #- name: set S3_ACCESS_KEY_B64
     #  run: echo "S3_ACCESS_KEY_B64=$(echo -n '${{ env.S3_ACCESS_KEY }}' | base64)" >> $GITHUB_ENV
@@ -120,9 +120,9 @@ jobs:
         REGISTRY_FQDN: ${{ env.REGISTRY_FQDN }}
         FRONT_DOMAIN: ${{ env.FRONT_DOMAIN }}
         S3_BUCKET_NAME: ${{ env.S3_BUCKET_NAME }}
-        S3_ACCESS_KEY: ${{ env.S3_ACCESS_KEY }}
-        S3_SECRET_KEY: ${{ env.S3_SECRET_KEY }}
-        S3_CREDENTIALS: ${{ env.S3_CREDENTIALS }}
+      #  S3_ACCESS_KEY: ${{ env.S3_ACCESS_KEY }}
+      #  S3_SECRET_KEY: ${{ env.S3_SECRET_KEY }}
+      #  S3_CREDENTIALS: ${{ env.S3_CREDENTIALS }}
       with:
         filename: k8s.yaml
 
