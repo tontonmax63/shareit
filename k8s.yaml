@@ -26,7 +26,7 @@ spec:
           mountPath: /mnt/s3
       initContainers:
       - name: __IMAGE_NAME__-storage
-        image: s3fs-sidecar
+        image: signaleleven/s3fs-sidecar:latest
         env:
         - name: AWS_ACCESS_KEY_ID
           valueFrom:
