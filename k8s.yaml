@@ -4,8 +4,9 @@ kind: ConfigMap
 metadata:
   name: s3-storage-config
 data:
+  URL: 'https://ams3.digitaloceanspaces.com'
   BUCKET: '__S3_BUCKET_NAME__'
-  MOUNTPOINT: '/mnt/s3'
+  MOUNTPOINT: '/s3-storage'
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -62,9 +63,14 @@ spec:
             configMapKeyRef:
               name: s3-storage-config
               key: MOUNTPOINT
+        - name: S3URL
+          valueFrom:
+            configMapKeyRef:
+              name: s3-storage-config
+              key: URL              
         volumeMounts:
         - name: s3-storage
-          mountPath: /mnt/s3
+          mountPath: /s3-storage
           mountPropagation: Bidirectional
       volumes:
       - name: s3-storage
