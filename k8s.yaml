@@ -1,45 +1,12 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: csi-s3-secret
+  name: s3-credentials
   namespace: default
-stringData:
-  accessKeyID: __S3_ACCESS_KEY__
-  secretAccessKey: __S3_SECRET_KEY__
-  endpoint: https://ams3.digitaloceanspaces.com
-  region: ""
-  encryptionKey: ""
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: csi-s3-pvc
-  namespace: default
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 5Gi
-  storageClassName: csi-s3
----
-kind: StorageClass
-apiVersion: storage.k8s.io/v1
-metadata:
-  name: csi-s3
-provisioner: ru.yandex.s3.csi
-parameters:
-  mounter: geesefs
-  options: "--memory-limit 1000 --dir-mode 0777 --file-mode 0666"
-  bucket: __S3_BUCKET_NAME__
-  csi.storage.k8s.io/provisioner-secret-name: csi-s3-secret
-  csi.storage.k8s.io/provisioner-secret-namespace: kube-system
-  csi.storage.k8s.io/controller-publish-secret-name: csi-s3-secret
-  csi.storage.k8s.io/controller-publish-secret-namespace: kube-system
-  csi.storage.k8s.io/node-stage-secret-name: csi-s3-secret
-  csi.storage.k8s.io/node-stage-secret-namespace: kube-system
-  csi.storage.k8s.io/node-publish-secret-name: csi-s3-secret
-  csi.storage.k8s.io/node-publish-secret-namespace: kube-system
+type: Opaque
+data:
+  accessKeyID: __S3_ACCESS_KEY_B64__
+  secretAccessKey: __S3_SECRET_KEY_B64__
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -68,9 +35,14 @@ spec:
           mountPath: /app/storage
       volumes:
       - name: s3-storage
-        persistentVolumeClaim:
-          claimName: csi-s3-pvc
-          readOnly: false
+        csi:
+          driver: ru.yandex.s3.csi
+          volumeAttributes:
+            bucket: __S3_BUCKET_NAME__
+            region: ams3
+            endpoint: https://ams3.digitaloceanspaces.com
+          nodePublishSecretRef:
+            name: s3-credentials
 ---
 apiVersion: v1
 kind: Service
