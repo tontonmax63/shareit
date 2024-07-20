@@ -36,6 +36,7 @@ spec:
         - name: s3-storage
           mountPath: /app/storage
           mountPropagation: HostToContainer
+      initContainer:
       - name: __IMAGE_NAME__-storage
         image: signaleleven/s3fs-sidecar:latest
         imagePullPolicy: Always

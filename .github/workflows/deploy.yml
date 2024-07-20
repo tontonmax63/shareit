@@ -53,8 +53,24 @@ jobs:
     needs: build
 
     steps:
+    - name: set version
+      run: |
+        BUILD_NUMBER="${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}"
+        echo "${BUILD_NUMBER}"
+        VERSION="$(mvn -q -U -Dexpression=project.build.finalName help:evaluate -DforceStdout=true -DbuildNumber=${BUILD_NUMBER})"
+        echo "DIST_VERSION=${VERSION}" >> $GITHUB_ENV
+
     - name: create tag
-      run: echo "TO DO"
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const {DIST_VERSION} = process.env          
+          github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `refs/tags/${DIST_VERSION}`,
+              sha: context.sha
+          })
 
   deploy:
     runs-on: ubuntu-latest
