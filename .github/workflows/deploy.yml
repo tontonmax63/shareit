@@ -55,10 +55,8 @@ jobs:
     steps:
     - name: set version
       run: |
-        BUILD_NUMBER="${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}"
-        echo "${BUILD_NUMBER}"
-        VERSION="$(mvn -q -U -Dexpression=project.build.finalName help:evaluate -DforceStdout=true -DbuildNumber=${BUILD_NUMBER})"
-        echo "DIST_VERSION=${VERSION}" >> $GITHUB_ENV
+        BUILD_NUMBER="1.${{ github.run_id }}.${{ github.run_number }}.${{ github.run_attempt }}"
+        echo "DIST_VERSION=${{ env.IMAGE_NAME }}-${BUILD_NUMBER}" >> $GITHUB_ENV
 
     - name: create tag
       uses: actions/github-script@v6
