@@ -5,8 +5,8 @@ metadata:
   namespace: default
 type: Opaque
 data:
-  accessKeyID: "__S3_ACCESS_KEY_B64__"
-  secretAccessKey: "__S3_SECRET_KEY_B64__=="
+  accessKeyID: __S3_ACCESS_KEY__
+  secretAccessKey: __S3_SECRET_KEY__
 ---
 apiVersion: apps/v1
 kind: Deployment
