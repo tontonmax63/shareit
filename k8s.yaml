@@ -11,6 +11,18 @@ stringData:
 apiVersion: v1
 kind: Secret
 metadata:
+  name: csi-s3-secret
+  namespace: default
+stringData:
+  accessKeyID: __S3_ACCESS_KEY__
+  secretAccessKey: __S3_SECRET_KEY__
+  endpoint: https://ams3.digitaloceanspaces.com
+  region: ""
+  encryptionKey: ""
+---
+apiVersion: v1
+kind: Secret
+metadata:
   name: s3fs-passwd
 type: Opaque
 data:
