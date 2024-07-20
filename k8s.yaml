@@ -34,8 +34,8 @@ spec:
           mountPath: /mnt/s3
       initContainers:
       - name: __IMAGE_NAME__-storage
-        image: panubo/s3fs
-        command: ["sh", "-c", "echo '__S3_ACCESS_KEY__:__S3_SECRET_KEY__'>/etc/passwd-s3fs; chmod 640 /etc/passwd-s3fs; /usr/local/bin/s3fs __S3_BUCKET_NAME__ /mnt/s3 -o url=https://ams3.digitaloceanspaces.com -o use_path_request_style -o allow_other -o nonempty -o passwd_file=/etc/passwd-s3fs"]
+        image: efrecon/s3fs
+        command: ["sh", "-c", "echo '__S3_ACCESS_KEY__:__S3_SECRET_KEY__'>/etc/passwd-s3fs; mkdir -p /mnt/s3 2>/dev/null; chmod 640 /etc/passwd-s3fs; /usr/local/bin/s3fs __S3_BUCKET_NAME__ /mnt/s3 -o url=https://ams3.digitaloceanspaces.com -o use_path_request_style -o allow_other -o nonempty -o passwd_file=/etc/passwd-s3fs"]
         volumeMounts:
         - name: s3-storage
           mountPath: /mnt/s3
