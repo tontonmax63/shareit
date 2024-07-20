@@ -6,7 +6,7 @@ metadata:
 stringData:
   accessKeyID: __S3_ACCESS_KEY__
   secretAccessKey: __S3_SECRET_KEY__
-  endpoint: https://__S3_BUCKET_NAME__.ams3.digitaloceanspaces.com
+  endpoint: https://ams3.digitaloceanspaces.com
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -24,7 +24,7 @@ spec:
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: csi-s3-existing-bucket
+  name: csi-s3
 provisioner: ru.yandex.s3.csi
 parameters:
   mounter: geesefs
