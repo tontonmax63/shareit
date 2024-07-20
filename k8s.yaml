@@ -33,15 +33,15 @@ spec:
           capabilities:
             add:
               - SYS_ADMIN
-        env:
-          - name: BLOB_STORAGE_URL
-            value: "file://./storage"
+        #env:
+        #  - name: BLOB_STORAGE_URL
+        #    value: "file://./storage"
             #value: "s3://__S3_BUCKET_NAME__?region=ams3&endpoint=ams3.digitaloceanspaces.com&s3ForcePathStyle=true"
         ports:
         - containerPort: 8080
         volumeMounts:
         - name: s3-storage
-          mountPath: /app/storage
+          mountPath: /app/s3-storage
           mountPropagation: HostToContainer
         livenessProbe:
           httpGet:
